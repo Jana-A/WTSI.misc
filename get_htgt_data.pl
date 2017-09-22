@@ -1,5 +1,8 @@
 #!/usr/bin/env perl
 
+use strict;
+use warnings;
+
 use Data::Dumper;
 use WWW::Mechanize;
 use Getopt::Long;
@@ -39,7 +42,7 @@ open WH, '>' . $output;
 my $count = 0;
 my @res;
 
-foreach my $l (@data[0..1]) {
+foreach my $l (@data) {
     ## chomp doesn't remove \r so use regex instead
     $l =~ s/\r?\n$//;
     my $line_data;
