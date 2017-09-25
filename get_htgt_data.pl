@@ -1,20 +1,19 @@
 #!/usr/bin/env perl
 
+=head1 DESCRIPTION
+
+This script reads plate names from a file and uses Mechanize to parse HTGT WebApp to get data on every plate and store in a JSON format.
+
+=cut
+
 use strict;
 use warnings;
 
-use Data::Dumper;
 use WWW::Mechanize;
 use Getopt::Long;
 use Try::Tiny;
-#use Term::ReadKey;
 use JSON::Parse 'json_file_to_perl';
 use JSON 'encode_json';
-
-#ReadMode("noecho");
-#print "Enter pass:";
-#chomp (my $passw = <>);
-#ReadMode("original");
 
 ## Main
 ## ----
@@ -36,7 +35,6 @@ my @data = (<FH>);
 close FH;
 
 my $header = shift @data;
-
 open WH, '>' . $output;
 
 my $count = 0;
@@ -83,13 +81,21 @@ close WH;
 $mech->get( $config->{htgt_welcome_url} );
 $mech->follow_link(text => 'LOGOUT');
 
-## Subs
-## ----
+=head2 load_config
+
+Read the configuration from a JSON file.
+
+=cut
 sub load_config {
     my $path = shift;
     return json_file_to_perl($path);
 }
 
+=head2 mech_init
+
+Initialize a Mechanize handle.
+
+=cut
 sub mech_init {
     my $mech_handle = WWW::Mechanize->new();
     $mech_handle->env_proxy();
@@ -97,9 +103,13 @@ sub mech_init {
     return $mech_handle;
 }
 
+=head2 htgt_login
+
+Login to HTGT webapp.
+
+=cut
 sub htgt_login {
     my $mechanize_obj = shift;
-
     $mechanize_obj->get( $config->{htgt_login_url} );
     $mechanize_obj->submit_form(
         form_name => 'login_form',
@@ -109,6 +119,11 @@ sub htgt_login {
     return $mechanize_obj;
 }
 
+=head2 find_plate_data
+
+Submit plate form and retrieve CSV format.
+
+=cut
 sub find_plate_data {
     my ($mecha, $plate_name) = @_;
 
