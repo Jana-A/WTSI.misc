@@ -16,7 +16,7 @@ use JSON 'encode_json';
 #chomp (my $passw = <>);
 #ReadMode("original");
 
-## main
+## Main
 ## ----
 my $config_path;
 my $plates_path;
@@ -76,17 +76,15 @@ foreach my $l (@data) {
     $count++;
 }
 
-#print Dumper @res;
-
 print WH encode_json({ data => \@res });
-
 close WH;
 
 ## logout
 $mech->get( $config->{htgt_welcome_url} );
 $mech->follow_link(text => 'LOGOUT');
 
-
+## Subs
+## ----
 sub load_config {
     my $path = shift;
     return json_file_to_perl($path);
