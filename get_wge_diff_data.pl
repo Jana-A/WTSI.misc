@@ -12,7 +12,7 @@ use warnings;
 use IO::Zlib;
 use Text::CSV;
 use Getopt::Long;
-use WGE::Model;
+use WGE::Model::DB;
 
 ## command-line arguments - the path of the .csv.gz file
 GetOptions(
@@ -23,7 +23,7 @@ GetOptions(
 ## connect to WGE db and get crispr IDs with no off_target_summary
 my @db_crispr_ids;
 
-my $model = WGE::Model->new( user => 'wge_admin' );
+my $model = WGE::Model::DB->new( user => 'wge_admin' );
 my @db_trans = $model->schema->resultset('CrisprsHuman')->search( { off_target_summary => { '=', undef } }, { columns => [ qw/id/ ] } )->all;
 
 foreach my $rec (@db_trans) {
