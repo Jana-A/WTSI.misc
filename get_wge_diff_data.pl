@@ -17,8 +17,8 @@ use WGE::Model::DB;
 ## command-line arguments - the path of the .csv.gz file
 my ($input_file, $output_file);
 GetOptions(
-    'input_file=s'  => \$input_file,
-    'output_file=s' => \$output_file
+    'input-file=s'  => \$input_file,
+    'output-file=s' => \$output_file
 );
 
 ## connect to WGE db and get crispr IDs with no off_target_summary
